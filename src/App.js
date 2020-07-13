@@ -1,40 +1,12 @@
 import React, { Component } from 'react'
 import './App.scss'
-import {
-  InputAdornment,
-  Input,
-  Select,
-  Button,
-  MenuItem
-} from '@material-ui/core'
-import { Form, Field } from 'react-final-form'
-import axios from 'axios'
-
-const currURL =
-  'https://free.currconv.com/api/v7/currencies?apiKey=7c75ab8096c89ac26891'
+import { MenuItem } from '@material-ui/core'
+import MainForm from './components/MainForm'
+import currenciesJSON from './currencies.json'
 
 class App extends Component {
   state = {
-    open: false,
-    currList: [],
-    selectedCurr: 'PLN'
-  }
-
-  componentDidMount() {
-    axios
-      .get(currURL)
-      .then(curr =>
-        this.setState({
-          currList: curr.data.results
-        })
-      )
-      .catch(err => console.log(err))
-  }
-
-  handleSelect = event => {
-    this.setState({
-      [event.target.name]: event.target.value
-    })
+    currList: currenciesJSON.results
   }
 
   handleOpen = () => {
@@ -43,10 +15,22 @@ class App extends Component {
     })
   }
 
-  render() {
-    const { open, currList } = this.state
+  handleSubmit = async values => {
+    fetch(
+      `https://prepaid.currconv.com/api/v7/convert?q=${values.selectFrom}_${values.selectTo},${values.selectTo}_${values.selectFrom}&compact=ultra&date=2018-12-31&endDate=2019-01-05&apiKey=pr_13edd894c11d47de925447de28461118`
+    )
+      .then(resp => resp.json())
+      .than(data =>
+        this.setState({
+          historical: data
+        })
+      )
+  }
 
-    const currSelect =
+  render() {
+    const { currList } = this.state
+
+    const currSelectList =
       currList &&
       Object.keys(currList).map(curr => (
         <MenuItem key={curr} value={curr}>
@@ -58,80 +42,14 @@ class App extends Component {
       <div className='container'>
         <main>
           <h3>Konwerter walut</h3>
-          <Form
-            onSubmit={formObj => {
-              console.log(formObj)
-            }}
-          >
-            {({ handleSubmit }) => (
-              <form onSubmit={handleSubmit}>
-                <Field name='quantity'>
-                  {({ input }) => (
-                    <Input
-                      endAdornment={<InputAdornment>$</InputAdornment>}
-                      fullWidth
-                      placeholder='Wpisz kwotę'
-                      {...input}
-                    />
-                  )}
-                </Field>
-                <Field name='result'>
-                  {({ input }) => (
-                    <Input
-                      style={{ marginTop: '45px' }}
-                      endAdornment={<InputAdornment>$</InputAdornment>}
-                      fullWidth
-                      placeholder='Wynik'
-                      {...input}
-                    />
-                  )}
-                </Field>
-                <div className='selects'>
-                  <Field name='result'>
-                    {({ input }) => (
-                      <Select
-                        variant='outlined'
-                        name='leftSelect'
-                        value={this.state.selectedCurr}
-                        onChange={this.handleSelect}
-                        displayEmpty
-                      >
-                        {currSelect}
-                      </Select>
-                    )}
-                  </Field>
-                  <Field name='result'>
-                    {({ input }) => (
-                      <Select
-                        variant='outlined'
-                        name='rightSelect'
-                        value={this.state.selectedCurr}
-                        onChange={this.handleSelect}
-                        displayEmpty
-                      >
-                        {currSelect}
-                      </Select>
-                    )}
-                  </Field>
-                </div>
-                <Button
-                  variant='contained'
-                  color='primary'
-                  fullWidth
-                  type='submit'
-                  onClick={this.handleOpen}
-                >
-                  Konwertuj
-                </Button>
-              </form>
-            )}
-          </Form>
+          <MainForm
+            onSubmit={this.handleSubmit}
+            currList={currSelectList}
+            handleOpen={this.handleOpen}
+          />
         </main>
-        <div
-          style={open ? { width: '640px' } : { width: '120px' }}
-          className='historical'
-        >
-          <div></div>
+        <div className='historical'>
+          <div>test</div>
         </div>
       </div>
     )
