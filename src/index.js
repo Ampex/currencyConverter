@@ -6,9 +6,9 @@ import * as serviceWorker from './serviceWorker'
 
 const theme = createMuiTheme({
   overrides: {
-    MuiSelect: {
-      root: {
-        width: '100px'
+    MuiSvgIcon: {
+      fontSizeLarge: {
+        width: '80px'
       }
     }
   },

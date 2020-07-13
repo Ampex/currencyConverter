@@ -2,13 +2,13 @@ import React from 'react'
 import { Form, Field } from 'react-final-form'
 import {
   InputAdornment,
-  Select,
   Button,
-  Input,
   FormControl,
   FormHelperText,
-  InputLabel
+  InputLabel,
+  Input
 } from '@material-ui/core'
+import { TextField, Select } from 'mui-rff'
 
 import SwapHorizIcon from '@material-ui/icons/SwapHoriz'
 
@@ -17,15 +17,13 @@ const validate = values => {
   if (!values.valueFrom) {
     errors.valueFrom = 'Nieprawidłowa wartość'
   }
-  if (!values.converted) {
-    errors.converted = 'Nieprawidłowa wartość'
-  }
   if (!values.selectFrom) {
     errors.selectFrom = 'Nieprawidłowa wartość'
   }
   if (!values.selectTo) {
     errors.selectTo = 'Nieprawidłowa wartość'
   }
+  console.log(errors)
   return errors
 }
 
@@ -38,23 +36,20 @@ const MainForm = props => {
         <form onSubmit={handleSubmit} noValidate>
           <Field name='valueFrom'>
             {({ input }) => (
-              <FormControl fullWidth>
-                <InputLabel>Wpisz kwotę</InputLabel>
-                <Input
-                  name='valueFrom'
-                  required
-                  endAdornment={
-                    values.selectFrom && (
-                      <InputAdornment>{values.selectFrom}</InputAdornment>
-                    )
-                  }
-                  {...input}
-                />
-                <FormHelperText>{validate.errors}</FormHelperText>
-              </FormControl>
+              <TextField
+                label='Wpisz kwotę'
+                name='valueFrom'
+                required
+                InputProps={{
+                  endAdornment: values.selectFrom && (
+                    <InputAdornment>{values.selectFrom}</InputAdornment>
+                  )
+                }}
+                {...input}
+              />
             )}
           </Field>
-          <Field name='converted'>
+          <Field noValidate name='converted'>
             {({ input }) => (
               <FormControl disabled fullWidth>
                 <InputLabel>Wynik</InputLabel>
@@ -74,37 +69,33 @@ const MainForm = props => {
           </Field>
 
           <div className='selects'>
-            <Field name='selectFrom' component='select'>
+            <Field name='selectFrom'>
               {({ input }) => (
-                <FormControl variant='outlined'>
-                  <InputLabel>Konwertuj z</InputLabel>
-                  <Select
-                    required
-                    name='selectFrom'
-                    labelWidth={96}
-                    value={values.selectFrom}
-                    {...input}
-                  >
-                    {props.currList}
-                  </Select>
-                </FormControl>
+                <Select
+                  required
+                  label='Konwertuj z'
+                  variant='outlined'
+                  name='selectFrom'
+                  value={values.selectFrom}
+                  {...input}
+                >
+                  {props.currList}
+                </Select>
               )}
             </Field>
             <SwapHorizIcon fontSize='large' color='primary' />
             <Field name='selectTo'>
               {({ input }) => (
-                <FormControl variant='outlined'>
-                  <InputLabel>Konwertuj na</InputLabel>
-                  <Select
-                    required
-                    name='selectTo'
-                    labelWidth={96}
-                    value={values.selectTo}
-                    {...input}
-                  >
-                    {props.currList}
-                  </Select>
-                </FormControl>
+                <Select
+                  required
+                  label='Konwertuj na'
+                  variant='outlined'
+                  name='selectTo'
+                  value={values.selectTo}
+                  {...input}
+                >
+                  {props.currList}
+                </Select>
               )}
             </Field>
           </div>
