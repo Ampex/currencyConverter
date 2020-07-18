@@ -4,9 +4,9 @@ import {
   InputAdornment,
   Button,
   FormControl,
-  FormHelperText,
   InputLabel,
-  Input
+  Input,
+  CircularProgress
 } from '@material-ui/core'
 import { TextField, Select } from 'mui-rff'
 
@@ -18,12 +18,11 @@ const validate = values => {
     errors.valueFrom = 'Nieprawidłowa wartość'
   }
   if (!values.selectFrom) {
-    errors.selectFrom = 'Nieprawidłowa wartość'
+    errors.selectFrom = 'Wybierz walutę'
   }
   if (!values.selectTo) {
-    errors.selectTo = 'Nieprawidłowa wartość'
+    errors.selectTo = 'Wybierz walutę'
   }
-  console.log(errors)
   return errors
 }
 
@@ -37,6 +36,7 @@ const MainForm = props => {
           <Field name='valueFrom'>
             {({ input }) => (
               <TextField
+                type='number'
                 label='Wpisz kwotę'
                 name='valueFrom'
                 required
@@ -63,7 +63,6 @@ const MainForm = props => {
                   }
                   {...input}
                 />
-                <FormHelperText>{validate.errors}</FormHelperText>
               </FormControl>
             )}
           </Field>
@@ -107,9 +106,9 @@ const MainForm = props => {
             type='submit'
             disabled={submitting || pristine}
           >
+            {submitting && <CircularProgress />}
             Konwertuj
           </Button>
-          {console.log(values)}
         </form>
       )}
     />
