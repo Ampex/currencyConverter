@@ -10,12 +10,12 @@ import {
   TableCell,
   TableBody,
   Fade,
-  Button
+  Button,
+  IconButton,
+  Grow
 } from '@material-ui/core'
-import CloseIcon from '@material-ui/icons/Close'
 import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt'
-
-const light = '#d3d3d31A'
+import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight'
 
 const Historical = props => {
   const rows =
@@ -27,25 +27,23 @@ const Historical = props => {
             {row.time}
           </TableCell>
           <TableCell align='right'>
-            {row.value}
-            {row.selectFrom}
+            {row.value} {row.selectFrom}
           </TableCell>
           <TableCell align='center'>
             <ArrowRightAltIcon />
           </TableCell>
           <TableCell align='right'>
-            {row.after}
-            {row.selectTo}
+            {row.after} {row.selectTo}
           </TableCell>
         </TableRow>
       </Fade>
     ))
 
   return (
-    <Grid container>
+    <Grid container alignItems='flex-start'>
       <Grid container direction='column' justify='space-around' item xs={10}>
-        <Box style={{ background: light }}>
-          <TableContainer style={{ maxHeight: '500px' }}>
+        <Box>
+          <TableContainer style={{ height: '490px' }}>
             <Table stickyHeader>
               <TableHead>
                 <TableRow>
@@ -57,18 +55,43 @@ const Historical = props => {
               </TableHead>
               <TableBody>{rows}</TableBody>
             </Table>
+            {!props.entries.length && (
+              <Typography style={{ height: '80%' }} className='flex-center'>
+                Brak historii konwersji walut
+              </Typography>
+            )}
           </TableContainer>
         </Box>
-        <Box style={{ background: light }} className='reset'>
-          <Button onClick={() => localStorage.removeItem('history')}>
+        <Box className='reset'>
+          <Button
+            disabled={!props.entries.length}
+            color='secondary'
+            style={{ textDecoration: 'underline' }}
+            onClick={props.clear}
+          >
             Wyczyść historię
           </Button>
         </Box>
       </Grid>
       <Grid container justify='center' item xs={2}>
-        <Box style={{ background: light }} className='tab'>
-          <CloseIcon fontSize='large' />
-          <Typography display='inline' variant='h5'>
+        <Box className='tab'>
+          <Grow in={props.status || props.entries.length}>
+            <IconButton
+              style={
+                props.status
+                  ? { transform: 'rotate(180deg)' }
+                  : { transform: 'rotate(0deg)' }
+              }
+              onClick={props.toogle}
+              color='secondary'
+            >
+              <KeyboardArrowRightIcon />
+            </IconButton>
+          </Grow>
+          <Typography
+            style={props.status ? { color: 'inherit' } : { color: '#adc8f5' }}
+            variant='h6'
+          >
             Historia
           </Typography>
         </Box>

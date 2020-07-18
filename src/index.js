@@ -10,11 +10,24 @@ const theme = createMuiTheme({
       fontSizeLarge: {
         width: '80px'
       }
+    },
+    MuiTableCell: {
+      stickyHeader: {
+        backgroundColor: '#3578eb',
+        color: '#ffffff',
+        fontWeight: 700
+      },
+      body: {
+        color: '#ffffff'
+      }
     }
   },
   palette: {
     primary: {
       main: '#3578eb'
+    },
+    secondary: {
+      main: '#ffffff'
     }
   }
 })

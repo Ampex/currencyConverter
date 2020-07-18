@@ -15,6 +15,9 @@ body {
   align-items: center;
   justify-content: center;
 }
+.anim {
+  transition: ease-in-out 0.8s;
+}
 
 .container {
   @extend .flex-center;
@@ -40,17 +43,21 @@ form {
 }
 
 .wrapper {
+  @extend .anim;
   display: flex;
-  width: auto;
-  width: 100%;
+  box-sizing: border-box;
 }
 
 .historical {
   @extend main;
+  @extend .anim;
+  padding: 70px 0 50px 70px;
+  box-sizing: border-box;
+  justify-content: start;
   position: absolute;
-  transition: ease-in-out 0.5s;
   background-color: $blue;
-  transform: translate(670px);
+  transform: translate(70px);
+
   z-index: 0;
   .content {
     position: relative;
@@ -59,14 +66,18 @@ form {
     overflow-x: hidden;
   }
   .tab {
+    @extend .flex-center;
+    @extend .anim;
     writing-mode: vertical-rl;
+    position: absolute;
+    top: 10px;
+    right: 11px;
   }
   .labels {
     color: #fff !important;
   }
   .reset {
     text-align: center;
-    text-decoration: underline;
     font-size: 18px;
   }
   ::-webkit-scrollbar {

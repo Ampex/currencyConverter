@@ -40,6 +40,7 @@ const MainForm = props => {
                 label='Wpisz kwotę'
                 name='valueFrom'
                 required
+                style={{ marginBottom: 25 }}
                 InputProps={{
                   endAdornment: values.selectFrom && (
                     <InputAdornment>{values.selectFrom}</InputAdornment>
@@ -49,23 +50,20 @@ const MainForm = props => {
               />
             )}
           </Field>
-          <Field noValidate name='converted'>
-            {({ input }) => (
-              <FormControl disabled fullWidth>
-                <InputLabel>Wynik</InputLabel>
-                <Input
-                  name='converted'
-                  required
-                  endAdornment={
-                    values.selectTo && (
-                      <InputAdornment>{values.selectTo}</InputAdornment>
-                    )
-                  }
-                  {...input}
-                />
-              </FormControl>
-            )}
-          </Field>
+          <FormControl disabled fullWidth>
+            <InputLabel shrink={props.result}>Wynik</InputLabel>
+            <Input
+              type='number'
+              name='converted'
+              required
+              value={props.result}
+              endAdornment={
+                values.selectTo && (
+                  <InputAdornment>{values.selectTo}</InputAdornment>
+                )
+              }
+            />
+          </FormControl>
 
           <div className='selects'>
             <Field name='selectFrom'>
@@ -101,12 +99,19 @@ const MainForm = props => {
 
           <Button
             fullWidth
+            size='large'
             variant='contained'
             color='primary'
             type='submit'
             disabled={submitting || pristine}
           >
-            {submitting && <CircularProgress />}
+            {submitting && (
+              <CircularProgress
+                color='primary'
+                size={30}
+                style={{ position: 'absolute' }}
+              />
+            )}
             Konwertuj
           </Button>
         </form>

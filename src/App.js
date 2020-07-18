@@ -8,7 +8,8 @@ import currenciesJSON from './currencies.json'
 class App extends Component {
   state = {
     currList: [],
-    historical: []
+    historical: [],
+    open: true
   }
 
   componentDidMount() {
@@ -23,7 +24,7 @@ class App extends Component {
       )
     localStorage.getItem('history') &&
       this.setState({
-        historical: JSON.parse(localStorage.getItem('history'))
+        historical: JSON.parse(localStorage.getItem('history')) || []
       })
   }
 
@@ -31,6 +32,11 @@ class App extends Component {
     this.setState({
       open: !this.state.open
     })
+  }
+
+  handleClear = () => {
+    localStorage.removeItem('history')
+    this.setState({ historical: [] })
   }
 
   handleSubmit = async val => {
@@ -45,20 +51,22 @@ class App extends Component {
           historical: [
             {
               time,
-              after: data[currs],
+              after: (data[currs] * val.valueFrom).toFixed(2),
               value: val.valueFrom,
               selectFrom: val.selectFrom,
               selectTo: val.selectTo
             },
             ...this.state.historical
-          ]
+          ],
+          open: true,
+          result: (data[currs] * val.valueFrom).toFixed(2)
         })
       )
     localStorage.setItem('history', JSON.stringify(this.state.historical))
   }
 
   render() {
-    const { currList, historical } = this.state
+    const { currList, historical, open, result } = this.state
 
     const currSelectList =
       currList &&
@@ -70,17 +78,33 @@ class App extends Component {
 
     return (
       <div className='container'>
-        <div className='wrapper'>
+        <div
+          style={open ? { width: '1150px' } : { width: '600px' }}
+          className='wrapper'
+        >
           <main>
             <h3>Konwerter walut</h3>
             <MainForm
               onSubmit={this.handleSubmit}
               currList={currSelectList}
               handleOpen={this.handleOpen}
+              result={result}
             />
           </main>
-          <div className='historical'>
-            <Historical entries={historical} />
+          <div
+            style={
+              open
+                ? { transform: 'translate(560px)' }
+                : { transform: 'translate(70px)' }
+            }
+            className='historical'
+          >
+            <Historical
+              clear={this.handleClear}
+              status={open}
+              toogle={this.handleOpen}
+              entries={historical}
+            />
           </div>
         </div>
       </div>
