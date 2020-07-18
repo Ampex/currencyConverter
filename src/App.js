@@ -9,7 +9,7 @@ class App extends Component {
   state = {
     currList: [],
     historical: [],
-    open: true
+    open: false
   }
 
   componentDidMount() {
@@ -70,11 +70,13 @@ class App extends Component {
 
     const currSelectList =
       currList &&
-      Object.keys(currList).map(curr => (
-        <MenuItem key={curr} value={curr}>
-          {curr}
-        </MenuItem>
-      ))
+      Object.keys(currList)
+        .sort()
+        .map(curr => (
+          <MenuItem key={curr} value={curr}>
+            {curr}
+          </MenuItem>
+        ))
 
     return (
       <div className='container'>

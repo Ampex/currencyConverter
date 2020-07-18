@@ -9,12 +9,11 @@ import {
   CircularProgress
 } from '@material-ui/core'
 import { TextField, Select } from 'mui-rff'
-
 import SwapHorizIcon from '@material-ui/icons/SwapHoriz'
 
 const validate = values => {
   const errors = {}
-  if (!values.valueFrom) {
+  if (!values.valueFrom || values.valueFrom <= 0) {
     errors.valueFrom = 'Nieprawidłowa wartość'
   }
   if (!values.selectFrom) {
@@ -39,7 +38,6 @@ const MainForm = props => {
                 type='number'
                 label='Wpisz kwotę'
                 name='valueFrom'
-                required
                 style={{ marginBottom: 25 }}
                 InputProps={{
                   endAdornment: values.selectFrom && (
@@ -69,7 +67,6 @@ const MainForm = props => {
             <Field name='selectFrom'>
               {({ input }) => (
                 <Select
-                  required
                   label='Konwertuj z'
                   variant='outlined'
                   name='selectFrom'
@@ -84,7 +81,6 @@ const MainForm = props => {
             <Field name='selectTo'>
               {({ input }) => (
                 <Select
-                  required
                   label='Konwertuj na'
                   variant='outlined'
                   name='selectTo'
