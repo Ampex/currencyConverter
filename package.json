@@ -6,8 +6,6 @@
   "dependencies": {
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
-    "@material-ui/lab": "^4.0.0-alpha.56",
-    "@material-ui/pickers": "3.x.x",
     "final-form": "^4.20.1",
     "mui-rff": "^2.1.15",
     "node-sass": "^4.14.1",

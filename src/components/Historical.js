@@ -17,6 +17,8 @@ import {
 import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt'
 import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight'
 
+const isMobile = window.innerWidth <= 1200
+
 const Historical = props => {
   const rows =
     props.entries &&
@@ -75,12 +77,20 @@ const Historical = props => {
       </Grid>
       <Grid container justify='center' item xs={2}>
         <Box className='tab'>
-          <Grow in={props.status || props.entries.length}>
+          <Grow in={props.status || props.entries.length !== 0}>
             <IconButton
               style={
                 props.status
-                  ? { transform: 'rotate(180deg)' }
-                  : { transform: 'rotate(0deg)' }
+                  ? {
+                      transform: `${
+                        isMobile ? 'rotate(270deg)' : 'rotate(180deg)'
+                      }`
+                    }
+                  : {
+                      transform: `${
+                        isMobile ? 'rotate(90deg)' : 'rotate(0deg)'
+                      }`
+                    }
               }
               onClick={props.toogle}
               color='secondary'

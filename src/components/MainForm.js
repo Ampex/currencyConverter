@@ -49,7 +49,7 @@ const MainForm = props => {
             )}
           </Field>
           <FormControl disabled fullWidth>
-            <InputLabel shrink={props.result}>Wynik</InputLabel>
+            <InputLabel shrink={props.result !== false}>Wynik</InputLabel>
             <Input
               type='number'
               name='converted'

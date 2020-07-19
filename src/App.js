@@ -5,10 +5,13 @@ import MainForm from './components/MainForm'
 import Historical from './components/Historical'
 import currenciesJSON from './currencies.json'
 
+const isMobile = window.innerWidth <= 1200
+
 class App extends Component {
   state = {
     currList: [],
     historical: [],
+    result: false,
     open: false
   }
 
@@ -77,11 +80,10 @@ class App extends Component {
             {curr}
           </MenuItem>
         ))
-
     return (
       <div className='container'>
         <div
-          style={open ? { width: '1150px' } : { width: '600px' }}
+          style={open && !isMobile ? { width: '1150px' } : { width: '600px' }}
           className='wrapper'
         >
           <main>
@@ -96,7 +98,11 @@ class App extends Component {
           <div
             style={
               open
-                ? { transform: 'translate(560px)' }
+                ? {
+                    transform: `${
+                      isMobile ? 'translate(70px, 570px)' : 'translate(560px)'
+                    }`
+                  }
                 : { transform: 'translate(70px)' }
             }
             className='historical'
