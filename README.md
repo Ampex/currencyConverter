@@ -1,6 +1,6 @@
 Job Task App
 
-## Live demo here: [DEMO](http://bkasperski.pl/currs/)
+## Live demo here: [DEMO](https://ampex.github.io/currencyConverter/)
 
 ### How to use QUERY PARAMETERS
 
@@ -15,7 +15,7 @@ Avaiable query params:
 #### Example below
 
 ```
-http://bkasperski.pl/currs/?value=100&from=USD&to=EUR
+https://ampex.github.io/currencyConverter/?value=100&from=USD&to=EUR
 ```
 
 ## Thanks for:

@@ -132,7 +132,7 @@ const MainForm = props => {
           </Button>
           <Redirect
             to={{
-              pathname: '/',
+              pathname: '/currencyConverter/',
               search: `${values.quantity && `${`?value=${values.quantity}`}`}${
                 values.from && `${`&from=${values.from}`}`
               }${values.to && `${`&to=${values.to}`}`}`
