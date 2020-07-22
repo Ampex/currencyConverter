@@ -10,82 +10,102 @@ import {
 } from '@material-ui/core'
 import { TextField, Select } from 'mui-rff'
 import SwapHorizIcon from '@material-ui/icons/SwapHoriz'
+import { useLocation, Redirect } from 'react-router-dom'
 
+function useQuery() {
+  return new URLSearchParams(useLocation().search)
+}
 const validate = values => {
   const errors = {}
-  if (!values.valueFrom || values.valueFrom <= 0) {
-    errors.valueFrom = 'Nieprawidłowa wartość'
+  if (!values.quantity || values.quantity <= 0) {
+    errors.quantity = 'Nieprawidłowa wartość'
   }
-  if (!values.selectFrom) {
-    errors.selectFrom = 'Wybierz walutę'
+  if (!values.from) {
+    errors.from = 'Wybierz walutę'
   }
-  if (!values.selectTo) {
-    errors.selectTo = 'Wybierz walutę'
+  if (!values.to) {
+    errors.to = 'Wybierz walutę'
   }
   return errors
 }
 
 const MainForm = props => {
+  let query = useQuery()
+
   return (
     <Form
       onSubmit={props.onSubmit}
+      initialValues={{
+        quantity: query.get('value') || '',
+        from: query.get('from') || '',
+        to: query.get('to') || ''
+      }}
       validate={validate}
       render={({ handleSubmit, submitting, pristine, values }) => (
         <form onSubmit={handleSubmit} noValidate>
-          <Field name='valueFrom'>
+          <Field name='quantity'>
             {({ input }) => (
               <TextField
+                {...input}
                 type='number'
                 label='Wpisz kwotę'
-                name='valueFrom'
+                name='quantity'
                 style={{ marginBottom: 25 }}
+                inputProps={{
+                  tabIndex: 1
+                }}
                 InputProps={{
-                  endAdornment: values.selectFrom && (
-                    <InputAdornment>{values.selectFrom}</InputAdornment>
+                  endAdornment: values.from && (
+                    <InputAdornment>{values.from}</InputAdornment>
                   )
                 }}
-                {...input}
               />
             )}
           </Field>
-          <FormControl disabled fullWidth>
-            <InputLabel shrink={props.result !== false}>Wynik</InputLabel>
+          <FormControl focused={false} fullWidth>
+            <InputLabel>Wynik</InputLabel>
             <Input
+              readOnly
               type='number'
               name='converted'
               required
-              value={props.result}
+              value={props.result || ''}
+              inputProps={{
+                tabIndex: -1
+              }}
               endAdornment={
-                values.selectTo && (
-                  <InputAdornment>{values.selectTo}</InputAdornment>
-                )
+                values.to && <InputAdornment>{values.to}</InputAdornment>
               }
             />
           </FormControl>
 
           <div className='selects'>
-            <Field name='selectFrom'>
+            <Field name='from'>
               {({ input }) => (
                 <Select
+                  {...input}
                   label='Konwertuj z'
                   variant='outlined'
-                  name='selectFrom'
-                  value={values.selectFrom}
-                  {...input}
+                  name='from'
+                  inputProps={{
+                    tabIndex: 2
+                  }}
                 >
                   {props.currList}
                 </Select>
               )}
             </Field>
             <SwapHorizIcon fontSize='large' color='primary' />
-            <Field name='selectTo'>
+            <Field name='to'>
               {({ input }) => (
                 <Select
+                  {...input}
                   label='Konwertuj na'
                   variant='outlined'
-                  name='selectTo'
-                  value={values.selectTo}
-                  {...input}
+                  name='to'
+                  inputProps={{
+                    tabIndex: 3
+                  }}
                 >
                   {props.currList}
                 </Select>
@@ -99,7 +119,7 @@ const MainForm = props => {
             variant='contained'
             color='primary'
             type='submit'
-            disabled={submitting || pristine}
+            disabled={submitting}
           >
             {submitting && (
               <CircularProgress
@@ -110,6 +130,14 @@ const MainForm = props => {
             )}
             Konwertuj
           </Button>
+          <Redirect
+            to={{
+              pathname: '/',
+              search: `${values.quantity && `${`?value=${values.quantity}`}`}${
+                values.from && `${`&from=${values.from}`}`
+              }${values.to && `${`&to=${values.to}`}`}`
+            }}
+          />
         </form>
       )}
     />

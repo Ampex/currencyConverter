@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import App from './App'
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
-import * as serviceWorker from './serviceWorker'
+import { BrowserRouter as Router } from 'react-router-dom'
 
 const theme = createMuiTheme({
   overrides: {
@@ -34,8 +34,9 @@ const theme = createMuiTheme({
 
 ReactDOM.render(
   <ThemeProvider theme={theme}>
-    <App />
+    <Router>
+      <App />
+    </Router>
   </ThemeProvider>,
   document.getElementById('root')
 )
-serviceWorker.unregister()

@@ -4,6 +4,7 @@ import { MenuItem } from '@material-ui/core'
 import MainForm from './components/MainForm'
 import Historical from './components/Historical'
 import currenciesJSON from './currencies.json'
+import { Route } from 'react-router-dom'
 
 const isMobile = window.innerWidth <= 1200
 
@@ -43,7 +44,7 @@ class App extends Component {
   }
 
   handleSubmit = async val => {
-    const currs = `${val.selectFrom}_${val.selectTo}`
+    const currs = `${val.from}_${val.to}`
     const time = new Date().toLocaleDateString()
     await fetch(
       `https://free.currconv.com/api/v7/convert?apiKey=7c75ab8096c89ac26891&q=${currs}&compact=ultra`
@@ -54,15 +55,15 @@ class App extends Component {
           historical: [
             {
               time,
-              after: (data[currs] * val.valueFrom).toFixed(2),
-              value: val.valueFrom,
-              selectFrom: val.selectFrom,
-              selectTo: val.selectTo
+              after: (data[currs] * val.quantity).toFixed(2),
+              value: val.quantity,
+              from: val.from,
+              to: val.to
             },
             ...this.state.historical
           ],
           open: true,
-          result: (data[currs] * val.valueFrom).toFixed(2)
+          result: (data[currs] * val.quantity).toFixed(2)
         })
       )
     localStorage.setItem('history', JSON.stringify(this.state.historical))
@@ -70,7 +71,6 @@ class App extends Component {
 
   render() {
     const { currList, historical, open, result } = this.state
-
     const currSelectList =
       currList &&
       Object.keys(currList)
@@ -80,6 +80,7 @@ class App extends Component {
             {curr}
           </MenuItem>
         ))
+
     return (
       <div className='container'>
         <div
@@ -113,6 +114,7 @@ class App extends Component {
               toogle={this.handleOpen}
               entries={historical}
             />
+            <Route path='/user/:username' component={MainForm} />
           </div>
         </div>
       </div>

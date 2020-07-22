@@ -29,13 +29,13 @@ const Historical = props => {
             {row.time}
           </TableCell>
           <TableCell align='right'>
-            {row.value} {row.selectFrom}
+            {row.value} {row.from}
           </TableCell>
           <TableCell align='center'>
             <ArrowRightAltIcon />
           </TableCell>
           <TableCell align='right'>
-            {row.after} {row.selectTo}
+            {row.after} {row.to}
           </TableCell>
         </TableRow>
       </Fade>
