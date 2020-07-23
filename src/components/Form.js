@@ -30,15 +30,20 @@ const validate = values => {
 }
 
 const MainForm = props => {
-  let query = useQuery()
+  const query = useQuery()
+  const q = {
+    v: query.get('v'),
+    f: query.get('from'),
+    t: query.get('to')
+  }
 
   return (
     <Form
       onSubmit={props.onSubmit}
       initialValues={{
-        quantity: query.get('value') || '',
-        from: query.get('from') || '',
-        to: query.get('to') || ''
+        quantity: q.v || '',
+        from: (q.f && q.f.toUpperCase()) || '',
+        to: (q.t && q.t.toUpperCase()) || ''
       }}
       validate={validate}
       render={({ handleSubmit, submitting, pristine, values }) => (
