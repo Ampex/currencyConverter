@@ -131,6 +131,7 @@ const MainForm = props => {
             Konwertuj
           </Button>
           <Redirect
+            sensitive
             to={{
               pathname: '/currencyConverter/',
               search: `${values.quantity && `${`?value=${values.quantity}`}`}${

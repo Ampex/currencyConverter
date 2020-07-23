@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import './App.scss'
 import { MenuItem } from '@material-ui/core'
-import MainForm from './components/MainForm'
+import Form from './components/Form'
 import Historical from './components/Historical'
 import currenciesJSON from './currencies.json'
 import { Route } from 'react-router-dom'
@@ -18,7 +18,7 @@ class App extends Component {
 
   componentDidMount() {
     fetch(
-      'https://free.currconv.com/api/v7/currencies?apiKey=7c75ab8096c89ac26891'
+      `https://free.currconv.com/api/v7/currencies?apiKey=${process.env.REACT_APP_API_KEY}`
     )
       .then(resp => resp.json())
       .then(data =>
@@ -89,7 +89,7 @@ class App extends Component {
         >
           <main>
             <h3>Konwerter walut</h3>
-            <MainForm
+            <Form
               onSubmit={this.handleSubmit}
               currList={currSelectList}
               handleOpen={this.handleOpen}
@@ -114,7 +114,7 @@ class App extends Component {
               toogle={this.handleOpen}
               entries={historical}
             />
-            <Route path='/user/:username' component={MainForm} />
+            <Route path='/user/:username' component={Form} />
           </div>
         </div>
       </div>
