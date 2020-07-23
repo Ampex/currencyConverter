@@ -32,7 +32,7 @@ const validate = values => {
 const MainForm = props => {
   const query = useQuery()
   const q = {
-    v: query.get('v'),
+    v: query.get('value'),
     f: query.get('from'),
     t: query.get('to')
   }
