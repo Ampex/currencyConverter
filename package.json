@@ -1,7 +1,7 @@
 {
   "name": "currencyconverter",
   "homepage": "https://ampex.github.io/currencyConverter",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.11.0",

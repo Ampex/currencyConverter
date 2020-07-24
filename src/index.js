@@ -6,6 +6,11 @@ import { BrowserRouter as Router } from 'react-router-dom'
 
 const theme = createMuiTheme({
   overrides: {
+    MuiBackdrop: {
+      root: {
+        zIndex: 2
+      }
+    },
     MuiSvgIcon: {
       fontSizeLarge: {
         width: '80px'

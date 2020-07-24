@@ -3,6 +3,7 @@ import './App.scss'
 import { MenuItem } from '@material-ui/core'
 import Form from './components/Form'
 import Historical from './components/Historical'
+import Alert from './components/Alert'
 import currenciesJSON from './currencies.json'
 import { Route } from 'react-router-dom'
 
@@ -83,6 +84,8 @@ class App extends Component {
 
     return (
       <div className='container'>
+        <Alert />
+
         <div
           style={open && !isMobile ? { width: '1150px' } : { width: '600px' }}
           className='wrapper'
