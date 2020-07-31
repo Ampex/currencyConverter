@@ -46,7 +46,7 @@ const MainForm = props => {
         to: (q.t && q.t.toUpperCase()) || ''
       }}
       validate={validate}
-      render={({ handleSubmit, submitting, pristine, values }) => (
+      render={({ handleSubmit, submitting, values }) => (
         <form onSubmit={handleSubmit} noValidate>
           <Field name='quantity'>
             {({ input }) => (
