@@ -1,23 +1,19 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { Alert, AlertTitle } from '@material-ui/lab'
 import { Snackbar, Backdrop } from '@material-ui/core'
+import useAPIcontext from '../hooks/useAPIcontext'
 
 const ALert = () => {
-  const [online, setOffline] = useState(true)
-
-  useEffect(() => {
-    window.addEventListener('online', () => setOffline(true))
-    window.addEventListener('offline', () => setOffline(false))
-  })
+  const { error } = useAPIcontext()
 
   return (
-    <Backdrop open={!online}>
-      <Snackbar anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }} open>
-        <Alert severity='error'>
+    <Backdrop open={error !== null}>
+      <Snackbar open anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
+        <Alert onClose={() => window.location.reload()} severity='error'>
           <AlertTitle>
-            <strong>Jesteś offline</strong>
+            <strong>Błąd</strong>
           </AlertTitle>
-          Utracono połączenie z serwerem. Sprawdź swoją sieć.
+          {error && error.message}
         </Alert>
       </Snackbar>
     </Backdrop>

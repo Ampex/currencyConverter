@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
   Grid,
   Typography,
@@ -16,13 +16,30 @@ import {
 } from '@material-ui/core'
 import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt'
 import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight'
+import useAPIcontext from '../hooks/useAPIcontext'
 
 const isMobile = window.innerWidth <= 1200
 
-const Historical = props => {
+const Historical = () => {
+  const { history, addHistory, open, toogleOpen } = useAPIcontext()
+
+  useEffect(() => {
+    localStorage.getItem('history') &&
+      addHistory(JSON.parse(localStorage.getItem('history')) || [])
+  }, [addHistory])
+
+  useEffect(() => {
+    localStorage.setItem('history', JSON.stringify(history))
+  }, [history])
+
+  const handleClear = () => {
+    localStorage.removeItem('history')
+    addHistory([])
+  }
+
   const rows =
-    props.entries &&
-    props.entries.map((row, index) => (
+    history &&
+    history.map((row, index) => (
       <Fade key={index} timeout={200} in>
         <TableRow hover>
           <TableCell component='th' scope='row'>
@@ -57,7 +74,7 @@ const Historical = props => {
               </TableHead>
               <TableBody>{rows}</TableBody>
             </Table>
-            {!props.entries.length && (
+            {!history.length && (
               <Typography style={{ height: '80%' }} className='flex-center'>
                 Brak historii konwersji walut
               </Typography>
@@ -66,10 +83,10 @@ const Historical = props => {
         </Box>
         <Box className='reset'>
           <Button
-            disabled={!props.entries.length}
+            disabled={!history.length}
             color='secondary'
             style={{ textDecoration: 'underline' }}
-            onClick={props.clear}
+            onClick={handleClear}
           >
             Wyczyść historię
           </Button>
@@ -77,10 +94,10 @@ const Historical = props => {
       </Grid>
       <Grid container justify='center' item xs={2}>
         <Box className='tab'>
-          <Grow in={props.status || props.entries.length !== 0}>
+          <Grow in={open || history.length !== 0}>
             <IconButton
               style={
-                props.status
+                open
                   ? {
                       transform: `${
                         isMobile ? 'rotate(270deg)' : 'rotate(180deg)'
@@ -92,14 +109,14 @@ const Historical = props => {
                       }`
                     }
               }
-              onClick={props.toogle}
+              onClick={() => toogleOpen()}
               color='secondary'
             >
               <KeyboardArrowRightIcon />
             </IconButton>
           </Grow>
           <Typography
-            style={props.status ? { color: 'inherit' } : { color: '#adc8f5' }}
+            style={open ? { color: 'inherit' } : { color: '#adc8f5' }}
             variant='h6'
           >
             Historia

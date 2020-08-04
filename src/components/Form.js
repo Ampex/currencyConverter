@@ -2,34 +2,43 @@ import React from 'react'
 import { Form, Field } from 'react-final-form'
 import {
   InputAdornment,
+  MenuItem,
   Button,
   FormControl,
   InputLabel,
   Input,
   CircularProgress
 } from '@material-ui/core'
-import { TextField, Select } from 'mui-rff'
 import SwapHorizIcon from '@material-ui/icons/SwapHoriz'
+import { TextField, Select } from 'mui-rff'
 import { useLocation, Redirect } from 'react-router-dom'
+import { validate } from './Validate'
+import useCurrList from '../hooks/useCurrList'
+import useAPIcontext from '../hooks/useAPIcontext'
 
-function useQuery() {
-  return new URLSearchParams(useLocation().search)
-}
-const validate = values => {
-  const errors = {}
-  if (!values.quantity || values.quantity <= 0) {
-    errors.quantity = 'Nieprawidłowa wartość'
-  }
-  if (!values.from) {
-    errors.from = 'Wybierz walutę'
-  }
-  if (!values.to) {
-    errors.to = 'Wybierz walutę'
-  }
-  return errors
-}
+const MainForm = () => {
+  const { data } = useCurrList()
+  const {
+    addError,
+    toogleOpen,
+    history,
+    addHistory,
+    result,
+    addResult
+  } = useAPIcontext()
 
-const MainForm = props => {
+  const useQuery = () => {
+    return new URLSearchParams(useLocation().search)
+  }
+
+  const currSelectList = Object.keys(data)
+    .sort()
+    .map(curr => (
+      <MenuItem key={curr} value={curr}>
+        {curr}
+      </MenuItem>
+    ))
+
   const query = useQuery()
   const q = {
     v: query.get('value'),
@@ -37,9 +46,33 @@ const MainForm = props => {
     t: query.get('to')
   }
 
+  const handleSubmit = async val => {
+    const currs = `${val.from}_${val.to}`
+    const time = new Date().toLocaleDateString()
+    toogleOpen(true)
+    await fetch(
+      `https://prepaid.currconv.com/api/v7/convert?apiKey=${process.env.REACT_APP_API_KEY}&q=${currs}&compact=ultra`
+    )
+      .then(resp => resp.json())
+      .then(data => {
+        addResult((data[currs] * val.quantity).toFixed(2))
+        addHistory([
+          {
+            time,
+            after: (data[currs] * val.quantity).toFixed(2),
+            value: val.quantity,
+            from: val.from,
+            to: val.to
+          },
+          ...history
+        ])
+      })
+      .catch(() => addError('Coś poszło nie tak. Spróbuj ponownie...'))
+  }
+
   return (
     <Form
-      onSubmit={props.onSubmit}
+      onSubmit={handleSubmit}
       initialValues={{
         quantity: q.v || '',
         from: (q.f && q.f.toUpperCase()) || '',
@@ -74,7 +107,7 @@ const MainForm = props => {
               type='number'
               name='converted'
               required
-              value={props.result || ''}
+              value={result || ''}
               inputProps={{
                 tabIndex: -1
               }}
@@ -96,7 +129,7 @@ const MainForm = props => {
                     tabIndex: 2
                   }}
                 >
-                  {props.currList}
+                  {currSelectList}
                 </Select>
               )}
             </Field>
@@ -112,7 +145,7 @@ const MainForm = props => {
                     tabIndex: 3
                   }}
                 >
-                  {props.currList}
+                  {currSelectList}
                 </Select>
               )}
             </Field>
@@ -149,5 +182,4 @@ const MainForm = props => {
     />
   )
 }
-
 export default MainForm

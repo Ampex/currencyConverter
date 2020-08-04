@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom'
 import App from './App'
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
 import { BrowserRouter as Router } from 'react-router-dom'
+import APIContext from './contexts/APIContext'
+import Alert from './components/Alert'
 
 const theme = createMuiTheme({
   overrides: {
@@ -39,9 +41,12 @@ const theme = createMuiTheme({
 
 ReactDOM.render(
   <ThemeProvider theme={theme}>
-    <Router>
-      <App />
-    </Router>
+    <APIContext>
+      <Router>
+        <Alert />
+        <App />
+      </Router>
+    </APIContext>
   </ThemeProvider>,
   document.getElementById('root')
 )
