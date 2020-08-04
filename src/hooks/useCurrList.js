@@ -6,12 +6,19 @@ export default function useCurrList() {
   const [response, setResponse] = useState({ data: false })
 
   useEffect(() => {
+    const handleErrors = res => {
+      if (!res.ok) {
+        addError('Wystąpił problem z serwerem. Spróbuj ponownie...')
+      }
+      return res.json()
+    }
+
     fetch(
       `https://prepaid.currconv.com/api/v7/currencies?apiKey=${process.env.REACT_APP_API_KEY}`
     )
-      .then(res => res.json())
+      .then(handleErrors)
       .then(data => setResponse({ data: data.results }))
-      .catch(() => addError('Wystąpił problem z serwerem. Spróbuj ponownie...'))
+      .catch(err => console.log(err))
   }, [addError, setResponse])
 
   return response

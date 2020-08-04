@@ -31,13 +31,17 @@ const MainForm = () => {
     return new URLSearchParams(useLocation().search)
   }
 
-  const currSelectList = Object.keys(data)
-    .sort()
-    .map(curr => (
-      <MenuItem key={curr} value={curr}>
-        {curr}
-      </MenuItem>
-    ))
+  const currSelectList = data ? (
+    Object.keys(data)
+      .sort()
+      .map(curr => (
+        <MenuItem key={curr} value={curr}>
+          {curr}
+        </MenuItem>
+      ))
+  ) : (
+    <MenuItem value=''>Błąd</MenuItem>
+  )
 
   const query = useQuery()
   const q = {
