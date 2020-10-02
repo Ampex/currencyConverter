@@ -1,5 +1,5 @@
-import React from 'react'
-import { Form, Field } from 'react-final-form'
+import React from "react"
+import { Form, Field } from "react-final-form"
 import {
   InputAdornment,
   MenuItem,
@@ -7,14 +7,14 @@ import {
   FormControl,
   InputLabel,
   Input,
-  CircularProgress
-} from '@material-ui/core'
-import SwapHorizIcon from '@material-ui/icons/SwapHoriz'
-import { TextField, Select } from 'mui-rff'
-import { useLocation, Redirect } from 'react-router-dom'
-import { validate } from './Validate'
-import useCurrList from '../hooks/useCurrList'
-import useAPIcontext from '../hooks/useAPIcontext'
+  CircularProgress,
+} from "@material-ui/core"
+import SwapHorizIcon from "@material-ui/icons/SwapHoriz"
+import { TextField, Select } from "mui-rff"
+import { useLocation, Redirect } from "react-router-dom"
+import { validate } from "./Validate"
+import useCurrList from "../hooks/useCurrList"
+import useAPIcontext from "../hooks/useAPIcontext"
 
 const MainForm = () => {
   const { data } = useCurrList()
@@ -24,7 +24,7 @@ const MainForm = () => {
     history,
     addHistory,
     result,
-    addResult
+    addResult,
   } = useAPIcontext()
 
   const useQuery = () => {
@@ -34,7 +34,7 @@ const MainForm = () => {
   const currSelectList = data ? (
     Object.keys(data)
       .sort()
-      .map(curr => (
+      .map((curr) => (
         <MenuItem key={curr} value={curr}>
           {curr}
         </MenuItem>
@@ -45,20 +45,20 @@ const MainForm = () => {
 
   const query = useQuery()
   const q = {
-    v: query.get('value'),
-    f: query.get('from'),
-    t: query.get('to')
+    v: query.get("value"),
+    f: query.get("from"),
+    t: query.get("to"),
   }
 
-  const handleSubmit = async val => {
+  const handleSubmit = async (val) => {
     const currs = `${val.from}_${val.to}`
     const time = new Date().toLocaleDateString()
     toogleOpen(true)
     await fetch(
       `https://prepaid.currconv.com/api/v7/convert?apiKey=${process.env.REACT_APP_API_KEY}&q=${currs}&compact=ultra`
     )
-      .then(resp => resp.json())
-      .then(data => {
+      .then((resp) => resp.json())
+      .then((data) => {
         addResult((data[currs] * val.quantity).toFixed(2))
         addHistory([
           {
@@ -66,21 +66,21 @@ const MainForm = () => {
             after: (data[currs] * val.quantity).toFixed(2),
             value: val.quantity,
             from: val.from,
-            to: val.to
+            to: val.to,
           },
-          ...history
+          ...history,
         ])
       })
-      .catch(() => addError('Coś poszło nie tak. Spróbuj ponownie...'))
+      .catch(() => addError("Coś poszło nie tak. Spróbuj ponownie..."))
   }
 
   return (
     <Form
       onSubmit={handleSubmit}
       initialValues={{
-        quantity: q.v || '',
-        from: (q.f && q.f.toUpperCase()) || '',
-        to: (q.t && q.t.toUpperCase()) || ''
+        quantity: q.v || "",
+        from: (q.f && q.f.toUpperCase()) || "",
+        to: (q.t && q.t.toUpperCase()) || "",
       }}
       validate={validate}
       render={({ handleSubmit, submitting, values }) => (
@@ -94,12 +94,12 @@ const MainForm = () => {
                 name='quantity'
                 style={{ marginBottom: 25 }}
                 inputProps={{
-                  tabIndex: 1
+                  tabIndex: 1,
                 }}
                 InputProps={{
                   endAdornment: values.from && (
                     <InputAdornment>{values.from}</InputAdornment>
-                  )
+                  ),
                 }}
               />
             )}
@@ -111,9 +111,9 @@ const MainForm = () => {
               type='number'
               name='converted'
               required
-              value={result || ''}
+              value={result || ""}
               inputProps={{
-                tabIndex: -1
+                tabIndex: -1,
               }}
               endAdornment={
                 values.to && <InputAdornment>{values.to}</InputAdornment>
@@ -130,7 +130,7 @@ const MainForm = () => {
                   variant='outlined'
                   name='from'
                   inputProps={{
-                    tabIndex: 2
+                    tabIndex: 2,
                   }}
                 >
                   {currSelectList}
@@ -146,7 +146,7 @@ const MainForm = () => {
                   variant='outlined'
                   name='to'
                   inputProps={{
-                    tabIndex: 3
+                    tabIndex: 3,
                   }}
                 >
                   {currSelectList}
@@ -167,7 +167,7 @@ const MainForm = () => {
               <CircularProgress
                 color='primary'
                 size={30}
-                style={{ position: 'absolute' }}
+                style={{ position: "absolute" }}
               />
             )}
             Konwertuj
@@ -175,10 +175,10 @@ const MainForm = () => {
           <Redirect
             sensitive
             to={{
-              pathname: '/currencyConverter/',
+              pathname: "/currencyConverter/",
               search: `${values.quantity && `${`?value=${values.quantity}`}`}${
                 values.from && `${`&from=${values.from}`}`
-              }${values.to && `${`&to=${values.to}`}`}`
+              }${values.to && `${`&to=${values.to}`}`}`,
             }}
           />
         </form>

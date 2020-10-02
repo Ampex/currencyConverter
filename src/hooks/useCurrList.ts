@@ -1,14 +1,16 @@
-import { useState, useEffect } from 'react'
-import useAPIcontext from './useAPIcontext'
+import { useState, useEffect } from "react"
+import useAPIcontext from "./useAPIcontext"
 
 export default function useCurrList() {
   const { addError } = useAPIcontext()
   const [response, setResponse] = useState({ data: false })
 
+  const errorText = "Wystąpił problem z serwerem. Spróbuj ponownie..."
+
   useEffect(() => {
-    const handleErrors = res => {
+    const handleErrors = (res: any) => {
       if (!res.ok) {
-        addError('Wystąpił problem z serwerem. Spróbuj ponownie...')
+        addError(errorText)
       }
       return res.json()
     }
@@ -17,8 +19,8 @@ export default function useCurrList() {
       `https://prepaid.currconv.com/api/v7/currencies?apiKey=${process.env.REACT_APP_API_KEY}`
     )
       .then(handleErrors)
-      .then(data => setResponse({ data: data.results }))
-      .catch(err => console.log(err))
+      .then((data) => setResponse({ data: data.results }))
+      .catch((err) => console.log(err))
   }, [addError, setResponse])
 
   return response
