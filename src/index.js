@@ -10,33 +10,33 @@ const theme = createMuiTheme({
   overrides: {
     MuiBackdrop: {
       root: {
-        zIndex: 2
-      }
+        zIndex: 2,
+      },
     },
     MuiSvgIcon: {
       fontSizeLarge: {
-        width: '80px'
-      }
+        width: '80px',
+      },
     },
     MuiTableCell: {
       stickyHeader: {
         backgroundColor: '#3578eb',
         color: '#ffffff',
-        fontWeight: 700
+        fontWeight: 700,
       },
       body: {
-        color: '#ffffff'
-      }
-    }
+        color: '#ffffff',
+      },
+    },
   },
   palette: {
     primary: {
-      main: '#3578eb'
+      main: '#3578eb',
     },
     secondary: {
-      main: '#ffffff'
-    }
-  }
+      main: '#ffffff',
+    },
+  },
 })
 
 ReactDOM.render(

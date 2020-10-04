@@ -1,5 +1,11 @@
-export const validate = values => {
-  const errors = {}
+interface IProps {
+  quantity: number | string
+  from: string
+  to: string
+}
+
+export const validate = (values: IProps) => {
+  const errors = {} as any
   if (!values.quantity || values.quantity <= 0) {
     errors.quantity = 'Nieprawidłowa wartość'
   }

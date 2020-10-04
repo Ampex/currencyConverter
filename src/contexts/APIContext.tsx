@@ -8,20 +8,20 @@ export const APIContext = React.createContext({
   history: [],
   addHistory: () => {},
   result: false,
-  addResult: () => {}
+  addResult: () => {},
 })
 
-export default function APIProvider({ children }) {
-  const [error, setError] = useState(null)
+export default function APIProvider({ children }: any) {
+  const [error, setError] = useState<unknown>(null)
   const [open, setOpen] = useState(false)
   const [history, setHistory] = useState([])
   const [result, setResult] = useState(false)
 
-  const addError = message => setError({ message })
-  const addHistory = entry => setHistory(entry)
-  const addResult = score => setResult(score)
+  const addError = (message: any) => setError({ message })
+  const addHistory = (entry: never[]) => setHistory(entry)
+  const addResult = (score: boolean) => setResult(score)
 
-  const contextValue = {
+  const contextValue: any = {
     error,
     addError: useCallback(message => addError(message), []),
     open,
@@ -29,7 +29,7 @@ export default function APIProvider({ children }) {
     history,
     addHistory: useCallback(entry => addHistory(entry), []),
     result,
-    addResult: useCallback(score => addResult(score), [])
+    addResult: useCallback(score => addResult(score), []),
   }
 
   return (
