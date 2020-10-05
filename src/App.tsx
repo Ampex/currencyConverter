@@ -1,9 +1,9 @@
-import React from 'react'
-import { Route } from 'react-router-dom'
-import './App.scss'
-import Form from './components/Form'
-import Historical from './components/Historical'
-import useAPIcontext from './hooks/useAPIcontext'
+import React from "react"
+import { Route } from "react-router-dom"
+import "./App.scss"
+import Form from "./components/Form"
+import Historical from "./components/Historical"
+import useAPIcontext from "./hooks/useAPIcontext"
 const isMobile = window.innerWidth <= 1200
 
 const App = () => {
@@ -12,7 +12,7 @@ const App = () => {
   return (
     <div className='container'>
       <div
-        style={open && !isMobile ? { width: '1150px' } : { width: '600px' }}
+        style={open && !isMobile ? { width: "1150px" } : { width: "600px" }}
         className='wrapper'
       >
         <main>
@@ -24,10 +24,10 @@ const App = () => {
             open
               ? {
                   transform: `${
-                    isMobile ? 'translate(70px, 570px)' : 'translate(560px)'
+                    isMobile ? "translate(70px, 570px)" : "translate(560px)"
                   }`,
                 }
-              : { transform: 'translate(70px)' }
+              : { transform: "translate(70px)" }
           }
           className='historical'
         >

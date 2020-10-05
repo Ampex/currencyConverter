@@ -16,6 +16,12 @@ import { validate } from "./Validate"
 import useCurrList from "../hooks/useCurrList"
 import useAPIcontext from "../hooks/useAPIcontext"
 
+interface IProps {
+  from: string
+  to: string
+  quantity: number
+}
+
 const MainForm = () => {
   const { data } = useCurrList()
   const {
@@ -50,7 +56,7 @@ const MainForm = () => {
     t: query.get("to"),
   }
 
-  const handleSubmit = async (val) => {
+  const handleSubmit = async (val: IProps) => {
     const currs = `${val.from}_${val.to}`
     const time = new Date().toLocaleDateString()
     toogleOpen(true)
@@ -68,7 +74,7 @@ const MainForm = () => {
             from: val.from,
             to: val.to,
           },
-          ...history,
+          ...(history as []),
         ])
       })
       .catch(() => addError("Coś poszło nie tak. Spróbuj ponownie..."))
@@ -98,7 +104,9 @@ const MainForm = () => {
                 }}
                 InputProps={{
                   endAdornment: values.from && (
-                    <InputAdornment>{values.from}</InputAdornment>
+                    <InputAdornment position='start'>
+                      {values.from}
+                    </InputAdornment>
                   ),
                 }}
               />
@@ -116,7 +124,9 @@ const MainForm = () => {
                 tabIndex: -1,
               }}
               endAdornment={
-                values.to && <InputAdornment>{values.to}</InputAdornment>
+                values.to && (
+                  <InputAdornment position='end'>{values.to}</InputAdornment>
+                )
               }
             />
           </FormControl>
@@ -173,7 +183,6 @@ const MainForm = () => {
             Konwertuj
           </Button>
           <Redirect
-            sensitive
             to={{
               pathname: "/currencyConverter/",
               search: `${values.quantity && `${`?value=${values.quantity}`}`}${

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect } from "react"
 import {
   Grid,
   Typography,
@@ -12,34 +12,34 @@ import {
   Fade,
   Button,
   IconButton,
-  Grow
-} from '@material-ui/core'
-import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt'
-import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight'
-import useAPIcontext from '../hooks/useAPIcontext'
+  Grow,
+} from "@material-ui/core"
+import ArrowRightAltIcon from "@material-ui/icons/ArrowRightAlt"
+import KeyboardArrowRightIcon from "@material-ui/icons/KeyboardArrowRight"
+import useAPIcontext from "../hooks/useAPIcontext"
 
 const isMobile = window.innerWidth <= 1200
 
 const Historical = () => {
-  const { history, addHistory, open, toogleOpen } = useAPIcontext()
+  const { history, addHistory, open, toogleOpen }: any = useAPIcontext()
 
   useEffect(() => {
-    localStorage.getItem('history') &&
-      addHistory(JSON.parse(localStorage.getItem('history')) || [])
+    localStorage.getItem("history") &&
+      addHistory(JSON.parse(localStorage.getItem("history")!) || [])
   }, [addHistory])
 
   useEffect(() => {
-    localStorage.setItem('history', JSON.stringify(history))
+    localStorage.setItem("history", JSON.stringify(history))
   }, [history])
 
   const handleClear = () => {
-    localStorage.removeItem('history')
+    localStorage.removeItem("history")
     addHistory([])
   }
 
   const rows =
     history &&
-    history.map((row, index) => (
+    history.map((row: any, index: any) => (
       <Fade key={index} timeout={200} in>
         <TableRow hover>
           <TableCell component='th' scope='row'>
@@ -62,7 +62,7 @@ const Historical = () => {
     <Grid container alignItems='flex-start'>
       <Grid container direction='column' justify='space-around' item xs={10}>
         <Box>
-          <TableContainer style={{ height: '490px' }}>
+          <TableContainer style={{ height: "490px" }}>
             <Table stickyHeader>
               <TableHead>
                 <TableRow>
@@ -75,7 +75,7 @@ const Historical = () => {
               <TableBody>{rows}</TableBody>
             </Table>
             {!history.length && (
-              <Typography style={{ height: '80%' }} className='flex-center'>
+              <Typography style={{ height: "80%" }} className='flex-center'>
                 Brak historii konwersji walut
               </Typography>
             )}
@@ -85,7 +85,7 @@ const Historical = () => {
           <Button
             disabled={!history.length}
             color='secondary'
-            style={{ textDecoration: 'underline' }}
+            style={{ textDecoration: "underline" }}
             onClick={handleClear}
           >
             Wyczyść historię
@@ -100,13 +100,13 @@ const Historical = () => {
                 open
                   ? {
                       transform: `${
-                        isMobile ? 'rotate(270deg)' : 'rotate(180deg)'
-                      }`
+                        isMobile ? "rotate(270deg)" : "rotate(180deg)"
+                      }`,
                     }
                   : {
                       transform: `${
-                        isMobile ? 'rotate(90deg)' : 'rotate(0deg)'
-                      }`
+                        isMobile ? "rotate(90deg)" : "rotate(0deg)"
+                      }`,
                     }
               }
               onClick={() => toogleOpen()}
@@ -116,7 +116,7 @@ const Historical = () => {
             </IconButton>
           </Grow>
           <Typography
-            style={open ? { color: 'inherit' } : { color: '#adc8f5' }}
+            style={open ? { color: "inherit" } : { color: "#adc8f5" }}
             variant='h6'
           >
             Historia

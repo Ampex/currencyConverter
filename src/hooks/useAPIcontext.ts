@@ -1,15 +1,15 @@
-import { useContext } from 'react'
-import { APIContext } from '../contexts/APIContext'
+import { useContext } from "react"
+import { APIContext } from "../contexts/APIContext"
 
 export interface IProps {
   error: any
   addError: (prop: string) => void
   open: boolean
-  toogleOpen: () => void
+  toogleOpen: (prop: boolean) => void
   history: {}
-  addHistory: {}
+  addHistory: unknown | any
   result: {}
-  addResult: () => void
+  addResult: (prop: string) => void
 }
 
 function useAPIContext() {

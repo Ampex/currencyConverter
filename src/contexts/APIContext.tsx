@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback } from "react"
 
 export const APIContext = React.createContext({
   error: null,
@@ -6,7 +6,7 @@ export const APIContext = React.createContext({
   open: false,
   toogleOpen: () => {},
   history: [],
-  addHistory: () => {},
+  addHistory: {},
   result: false,
   addResult: () => {},
 })
@@ -17,19 +17,19 @@ export default function APIProvider({ children }: any) {
   const [history, setHistory] = useState([])
   const [result, setResult] = useState(false)
 
-  const addError = (message: any) => setError({ message })
+  const addError = (message: string) => setError({ message })
   const addHistory = (entry: never[]) => setHistory(entry)
   const addResult = (score: boolean) => setResult(score)
 
   const contextValue: any = {
     error,
-    addError: useCallback(message => addError(message), []),
+    addError: useCallback((message) => addError(message), []),
     open,
-    toogleOpen: useCallback(state => setOpen(state || !open), [open]),
+    toogleOpen: useCallback((state) => setOpen(state || !open), [open]),
     history,
-    addHistory: useCallback(entry => addHistory(entry), []),
+    addHistory: useCallback((entry) => addHistory(entry), []),
     result,
-    addResult: useCallback(score => addResult(score), []),
+    addResult: useCallback((score) => addResult(score), []),
   }
 
   return (
